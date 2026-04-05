@@ -1,0 +1,77 @@
+services:
+  uptime-status-admin:
+    build: .
+    container_name: uptime-status-admin
+    restart: unless-stopped
+    env_file: .env
+    command: ["uvicorn", "app.main_admin:app", "--host", "0.0.0.0", "--port", "80"]
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:80/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+
+  uptime-status-public:
+    build: .
+    container_name: uptime-status-public
+    restart: unless-stopped
+    env_file: .env
+    command: ["uvicorn", "app.main_public:app", "--host", "0.0.0.0", "--port", "80"]
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:80/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - default
+      - shared-npm
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    container_name: uptime-status-valkey
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 3s
+    volumes:
+      - ./valkey-data:/data
+
+  uptime-status-oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: uptime-status-oauth2-proxy
+    restart: unless-stopped
+    env_file: oauth2-proxy.env
+    depends_on:
+      uptime-status-admin:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "oauth2-proxy", "--version"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - default
+      - shared-npm
+
+networks:
+  shared-npm:
+    name: shared-npm
+    external: true

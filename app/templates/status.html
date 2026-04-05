@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script>
+const I18N = JSON.parse({{ translations | tojson | replace("</", "<\\/") | tojson }});
+const STATUS_DATA = JSON.parse({{ data | tojson | replace("</", "<\\/") | tojson }});
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="status-page">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <img id="logo" class="logo"
+                 src="{{ data.settings.get('logo_light', '') }}"
+                 data-light="{{ data.settings.get('logo_light', '') }}"
+                 data-dark="{{ data.settings.get('logo_dark', '') }}"
+                 alt="Logo"
+                 {% if not data.settings.get('logo_light') %}style="display:none"{% endif %}>
+            <h1 id="page-title" data-i18n="title">{{ data.settings.get('page_title_' + (default_lang or 'en'), '') or t('title', default_lang or 'en') }}</h1>
+            <span id="header-status" class="header-status overall-{{ overall }}" data-i18n="{{ 'all_operational' if overall == 'up' else ('major_outage' if overall == 'down' else 'some_issues') }}">{{ t('all_operational' if overall == 'up' else ('major_outage' if overall == 'down' else 'some_issues'), default_lang or 'en') }}</span>
+        </div>
+        <div class="header-right">
+            <button id="lang-toggle" class="header-btn" title="DE / EN">
+                <span id="lang-label">{{ (default_lang or 'en') | upper }}</span>
+            </button>
+            <button id="theme-toggle" class="header-btn" title="Theme">
+                <span class="theme-icon theme-icon-light">&#9788;</span>
+                <span class="theme-icon theme-icon-dark">&#9790;</span>
+                <span class="theme-icon theme-icon-auto">&#9680;</span>
+            </button>
+        </div>
+    </header>
+
+    <div id="overall-banner" class="overall-banner"></div>
+
+    <!-- Incidents -->
+    <div id="incidents-container">
+        {% for inc in data.incidents %}
+        {% if inc.active %}
+        <div class="incident incident-{{ inc.severity }}" data-incident-id="{{ inc.id }}">
+            <span class="incident-severity">{{ t('severity_' + inc.severity, default_lang or 'en') }}</span><strong class="incident-title">{{ inc['title_' + (default_lang or 'en')] }}</strong>{% if inc.get('occurred_at') %}<span class="incident-date">{{ inc.occurred_at[:16].replace('T', ' ') }}</span>{% endif %}{% if inc['content_' + (default_lang or 'en')] %}<span class="incident-content">{{ inc['content_' + (default_lang or 'en')] }}</span>{% endif %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Affected services -->
+    <div id="issues-container" class="issues-container"></div>
+
+    <!-- Monitor groups -->
+    <div id="monitor-grid" class="monitor-grid">
+        {% for inst in data.instances %}
+        {% if data.instances | length > 1 %}
+        <div class="instance-header">
+            <h2>{{ inst.name }}</h2>
+            {% if not inst.reachable %}
+            <span class="badge badge-unreachable" data-i18n="unreachable">{{ t('unreachable', default_lang or 'en') }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% for group in inst.groups %}
+        <div class="monitor-card{% if not inst.reachable %} card-unreachable{% endif %}">
+            {% if group.children is defined and group.children %}
+            <div class="card-header">
+                <span class="dot dot-{{ group.status }}"></span>
+                <h3>{{ group.name }}</h3>
+            </div>
+            <div class="card-body">
+                {% for child in group.children %}
+                <div class="monitor-row" data-monitor-id="{{ child.id }}">
+                    <span class="dot dot-{{ child.status }}"></span>
+                    <span class="monitor-name">{{ child.name }}</span>
+                </div>
+                {% if child.children is defined %}
+                {% for sub in child.children %}
+                <div class="monitor-row monitor-row-nested" data-monitor-id="{{ sub.id }}">
+                    <span class="dot dot-{{ sub.status }}"></span>
+                    <span class="monitor-name">{{ sub.name }}</span>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="monitor-row" data-monitor-id="{{ group.id }}">
+                <span class="dot dot-{{ group.status }}"></span>
+                <span class="monitor-name">{{ group.name }}</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div id="footer-notice" class="footer-notice">
+            {% if data.settings.get('notice_' + (default_lang or 'en')) %}
+            <span class="footer-notice-text">{{ data.settings.get('notice_' + (default_lang or 'en')) }}</span>
+            {% endif %}
+            {% if data.settings.get('ticket_url') %}
+            <a href="{{ data.settings.get('ticket_url') }}" target="_blank" rel="noopener" class="footer-ticket-link">{{ data.settings.get('ticket_label_' + (default_lang or 'en')) or data.settings.get('ticket_url') }}</a>
+            {% endif %}
+        </div>
+        <div class="footer-items" id="footer-items-list">
+            {% for item in data.footer_items %}
+            <span class="footer-item">
+                {% if item.url %}
+                <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item['label_' + (default_lang or 'en')] }}</a>
+                {% else %}
+                {{ item['label_' + (default_lang or 'en')] }}
+                {% endif %}
+            </span>
+            {% if not loop.last %}<span class="footer-sep">&middot;</span>{% endif %}
+            {% endfor %}
+        </div>
+    </footer>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/app.js?v=6"></script>
+{% endblock %}

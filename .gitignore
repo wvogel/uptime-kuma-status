@@ -1,0 +1,10 @@
+.env
+oauth2-proxy.env
+data/
+valkey-data/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+.DS_Store

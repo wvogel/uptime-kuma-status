@@ -1,0 +1,15 @@
+.git
+.env
+*.env
+oauth2-proxy.env
+data/
+valkey-data/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+docs/
+*.md
+LICENSE
+.gitlab-ci.yml
+.DS_Store

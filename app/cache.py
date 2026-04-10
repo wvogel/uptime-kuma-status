@@ -117,8 +117,13 @@ def _build_tree(monitors, heartbeats, hidden_ids, inst_id):
         if node["children"]:
             mon = all_by_id.get(node["kuma_id"])
             if mon and mon.get("type") == "group":
-                worst = min(node["children"], key=lambda c: priority.get(c["status"], 99))
-                node["status"] = worst["status"]
+                statuses = [c["status"] for c in node["children"]]
+                if all(s == "up" for s in statuses):
+                    node["status"] = "up"
+                elif all(s == "down" for s in statuses):
+                    node["status"] = "down"
+                else:
+                    node["status"] = "degraded"
 
     for r in roots:
         derive_status(r)

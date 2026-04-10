@@ -399,6 +399,7 @@ body {
 .dot-up { background: var(--green); }
 .dot-down { background: var(--red); }
 .dot-pending { background: var(--yellow); }
+.dot-degraded { background: var(--yellow); }
 .dot-maintenance { background: var(--blue); }
 .dot-inactive { background: var(--gray-light); }
 .dot-unreachable { background: var(--gray-light); }

@@ -188,10 +188,13 @@
             const path = multiInstance
                 ? [instanceName, ...parents].join(" \u203a ")
                 : parents.length > 0 ? parents.join(" \u203a ") : "";
-            if (n.status === "maintenance") {
-                maintenance.push({ name: n.name, status: n.status, path: path });
-            } else if (n.status && n.status !== "up" && n.status !== "unknown" && n.status !== "inactive") {
-                issues.push({ name: n.name, status: n.status, path: path });
+            const isGroup = n.children && n.children.length > 0;
+            if (!isGroup) {
+                if (n.status === "maintenance") {
+                    maintenance.push({ name: n.name, status: n.status, path: path });
+                } else if (n.status && n.status !== "up" && n.status !== "unknown" && n.status !== "inactive") {
+                    issues.push({ name: n.name, status: n.status, path: path });
+                }
             }
             if (n.children) {
                 collectIssues(n.children, instanceName, [...parents, n.name], issues, maintenance, multiInstance);

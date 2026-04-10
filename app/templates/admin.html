@@ -115,12 +115,35 @@
                 </select>
                 <label>Datum / Date</label>
                 <input type="datetime-local" id="inc-occurred-at">
+                <label data-i18n="resolved_at">End time</label>
+                <input type="datetime-local" id="inc-resolved-at">
                 <label data-i18n="incident_active">Active</label>
                 <input type="checkbox" id="inc-active" checked>
             </div>
             <div class="form-actions">
                 <button class="btn btn-primary" onclick="Admin.saveIncident()" data-i18n="save">Save</button>
                 <button class="btn" onclick="Admin.hideIncidentForm()" data-i18n="cancel">Cancel</button>
+            </div>
+            <!-- Updates timeline -->
+            <div id="inc-updates-section" style="display:none">
+                <h3 style="margin:16px 0 8px;font-size:13px" data-i18n="updates">Updates</h3>
+                <div id="inc-updates-list"></div>
+                <div class="form-grid" style="margin-top:8px">
+                    <label>Update (DE)</label>
+                    <input type="text" id="inc-update-de">
+                    <label>Update (EN)</label>
+                    <input type="text" id="inc-update-en">
+                    <label data-i18n="update_severity">Severity change</label>
+                    <select id="inc-update-severity">
+                        <option value="">—</option>
+                        <option value="info">Info</option>
+                        <option value="warning">Warning</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="Admin.addIncidentUpdate()" data-i18n="add_update">Add Update</button>
+                </div>
             </div>
         </div>
         <div id="incidents-list" class="sortable-list"></div>

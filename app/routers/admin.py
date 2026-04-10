@@ -11,6 +11,7 @@ from app.ws import ws_manager
 from app.schemas import (
     InstanceCreate, InstanceUpdate,
     IncidentCreate, IncidentUpdate, IncidentOut,
+    IncidentUpdateCreate, IncidentUpdateOut,
     FooterItemCreate, FooterItemUpdate, FooterItemOut, FooterReorder,
     HiddenMonitorToggle, SettingUpdate, InstanceReorder, IncidentReorder,
 )
@@ -172,10 +173,13 @@ async def api_unhide_monitor(data: HiddenMonitorToggle, db: Session = Depends(ge
 
 @router.get("/api/incidents")
 def api_list_incidents(db: Session = Depends(get_db)):
-    return [
-        IncidentOut.model_validate(inc)
-        for inc in incident_service.list_incidents(db)
-    ]
+    incidents = incident_service.list_incidents(db)
+    result = []
+    for inc in incidents:
+        out = IncidentOut.model_validate(inc)
+        out.updates = [IncidentUpdateOut.model_validate(u) for u in incident_service.list_updates(db, inc.id)]
+        result.append(out)
+    return result
 
 
 @router.post("/api/incidents")
@@ -213,6 +217,26 @@ async def _broadcast_incident(action: str, inc):
 @router.post("/api/incidents/reorder")
 async def api_reorder_incidents(data: IncidentReorder, db: Session = Depends(get_db)):
     incident_service.reorder_incidents(db, data.incident_ids)
+    return {"ok": True}
+
+
+@router.post("/api/incidents/{incident_id}/updates")
+async def api_create_incident_update(incident_id: int, data: IncidentUpdateCreate, db: Session = Depends(get_db)):
+    upd = incident_service.create_update(db, incident_id, data.model_dump())
+    if not upd:
+        raise HTTPException(404)
+    inc = incident_service.get_incident(db, incident_id)
+    await _broadcast_incident("updated", inc)
+    return IncidentUpdateOut.model_validate(upd)
+
+
+@router.delete("/api/incidents/{incident_id}/updates/{update_id}")
+async def api_delete_incident_update(incident_id: int, update_id: int, db: Session = Depends(get_db)):
+    if not incident_service.delete_update(db, update_id):
+        raise HTTPException(404)
+    inc = incident_service.get_incident(db, incident_id)
+    if inc:
+        await _broadcast_incident("updated", inc)
     return {"ok": True}
 
 

@@ -48,9 +48,16 @@ const STATUS_DATA = JSON.parse({{ data | tojson | replace("</", "<\\/") | tojson
     <!-- Incidents -->
     <div id="incidents-container">
         {% for inc in data.incidents %}
-        {% if inc.active %}
-        <div class="incident incident-{{ inc.severity }}" data-incident-id="{{ inc.id }}">
-            <span class="incident-severity">{{ t('severity_' + inc.severity, default_lang or 'en') }}</span><strong class="incident-title">{{ inc['title_' + (default_lang or 'en')] }}</strong>{% if inc.get('occurred_at') %}<span class="incident-date">{{ inc.occurred_at[:16].replace('T', ' ') }}</span>{% endif %}{% if inc['content_' + (default_lang or 'en')] %}<span class="incident-content">{{ inc['content_' + (default_lang or 'en')] }}</span>{% endif %}
+        {% if inc.active or inc.get('resolved') %}
+        <div class="incident {{ 'incident-resolved' if inc.get('resolved') else 'incident-' + inc.severity }}" data-incident-id="{{ inc.id }}">
+            <span class="incident-severity">{{ t('resolved' if inc.get('resolved') else 'severity_' + inc.severity, default_lang or 'en') }}</span><strong class="incident-title">{{ inc['title_' + (default_lang or 'en')] }}</strong>{% if inc.get('occurred_at') %}<span class="incident-date">{{ inc.occurred_at[:16].replace('T', ' ') }}</span>{% endif %}{% if inc['content_' + (default_lang or 'en')] %}<span class="incident-content">{{ inc['content_' + (default_lang or 'en')] }}</span>{% endif %}
+            {% if inc.get('updates') %}
+            <div class="incident-updates">
+                {% for u in inc.updates %}
+                <div class="incident-update">{% if u.severity %}<span class="incident-severity">{{ t('severity_' + u.severity, default_lang or 'en') }}</span>{% endif %}<span class="incident-update-date">{{ u.created_at[:16].replace('T', ' ') }}</span><span class="incident-update-msg">{{ u['message_' + (default_lang or 'en')] or u.message_de }}</span></div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         {% endif %}
         {% endfor %}

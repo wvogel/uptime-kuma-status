@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import sqlite3
+from datetime import datetime
 
 import redis.asyncio as redis
 
@@ -29,8 +30,14 @@ def _read_sqlite():
             for r in conn.execute("SELECT instance_id, kuma_monitor_id FROM hidden_monitor").fetchall()
         }
         incidents = [dict(r) for r in conn.execute(
-            "SELECT * FROM incident WHERE active = 1 ORDER BY position, occurred_at DESC"
+            "SELECT * FROM incident WHERE active = 1"
+            " OR (resolved_at IS NOT NULL AND resolved_at > datetime('now', '-30 minutes'))"
+            " ORDER BY position, occurred_at DESC"
         ).fetchall()]
+        incident_updates = {}
+        for r in conn.execute("SELECT * FROM incident_update ORDER BY created_at").fetchall():
+            r = dict(r)
+            incident_updates.setdefault(r["incident_id"], []).append(r)
         settings = {r["key"]: r["value"] for r in conn.execute("SELECT key, value FROM setting").fetchall()}
         footer_items = [dict(r) for r in conn.execute(
             "SELECT * FROM footer_item ORDER BY position"
@@ -204,6 +211,45 @@ class MonitorFetcher:
         await self._fetch_all()
 
 
+def _build_incident(inc: dict, updates: list[dict]) -> dict:
+    """Build incident dict with resolved state and effective severity."""
+    now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M")
+    resolved_at = inc.get("resolved_at") or ""
+    resolved = bool(resolved_at and resolved_at <= now)
+
+    # Effective severity: last update with severity, or incident severity
+    effective_severity = inc["severity"]
+    for upd in updates:
+        if upd.get("severity"):
+            effective_severity = upd["severity"]
+
+    return {
+        "id": inc["id"],
+        "title_de": inc["title_de"],
+        "title_en": inc["title_en"],
+        "content_de": inc["content_de"],
+        "content_en": inc["content_en"],
+        "severity": effective_severity,
+        "original_severity": inc["severity"],
+        "active": inc["active"] and not resolved,
+        "resolved": resolved,
+        "occurred_at": inc["occurred_at"] or "",
+        "resolved_at": resolved_at,
+        "created_at": inc["created_at"],
+        "updated_at": inc["updated_at"],
+        "updates": [
+            {
+                "id": u["id"],
+                "message_de": u["message_de"],
+                "message_en": u["message_en"],
+                "severity": u.get("severity"),
+                "created_at": u["created_at"],
+            }
+            for u in updates
+        ],
+    }
+
+
 async def get_status_data() -> dict:
     """Read current status from Valkey + SQLite. Used by public and admin."""
     _, hidden_set, incidents, settings, footer_items = _read_sqlite()
@@ -220,18 +266,7 @@ async def get_status_data() -> dict:
     return {
         "instances": instances,
         "incidents": [
-            {
-                "id": inc["id"],
-                "title_de": inc["title_de"],
-                "title_en": inc["title_en"],
-                "content_de": inc["content_de"],
-                "content_en": inc["content_en"],
-                "severity": inc["severity"],
-                "active": inc["active"],
-                "occurred_at": inc["occurred_at"] or "",
-                "created_at": inc["created_at"],
-                "updated_at": inc["updated_at"],
-            }
+            _build_incident(inc, incident_updates.get(inc["id"], []))
             for inc in incidents
         ],
         "settings": settings,

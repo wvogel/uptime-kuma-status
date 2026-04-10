@@ -455,7 +455,17 @@ networks:
         document.getElementById("inc-content-en").value = inc ? inc.content_en : "";
         document.getElementById("inc-severity").value = inc ? inc.severity : "warning";
         document.getElementById("inc-occurred-at").value = inc ? (inc.occurred_at || "").slice(0, 16) : nowLocal();
+        document.getElementById("inc-resolved-at").value = inc && inc.resolved_at ? inc.resolved_at.slice(0, 16) : "";
         document.getElementById("inc-active").checked = inc ? inc.active : true;
+
+        // Updates section (only for existing incidents)
+        const updSection = document.getElementById("inc-updates-section");
+        if (inc && inc.id) {
+            updSection.style.display = "";
+            renderIncidentUpdates(inc.updates || []);
+        } else {
+            updSection.style.display = "none";
+        }
     }
 
     function hideIncidentForm() {
@@ -476,6 +486,7 @@ networks:
             content_en: document.getElementById("inc-content-en").value,
             severity: document.getElementById("inc-severity").value,
             occurred_at: document.getElementById("inc-occurred-at").value,
+            resolved_at: document.getElementById("inc-resolved-at").value || null,
             active: document.getElementById("inc-active").checked,
         };
         try {
@@ -496,6 +507,57 @@ networks:
             await api("DELETE", `/api/incidents/${id}`);
             await loadIncidents();
         });
+    }
+
+    // --- Incident Updates ---
+
+    function renderIncidentUpdates(updates) {
+        const list = document.getElementById("inc-updates-list");
+        list.innerHTML = "";
+        updates.forEach(u => {
+            const row = document.createElement("div");
+            row.className = "incident-update-row";
+            const date = (u.created_at || "").replace("T", " ").slice(0, 16);
+            const sev = u.severity ? ` <span class="badge badge-${u.severity}">${u.severity}</span>` : "";
+            const msg = currentLang === "de" ? u.message_de : u.message_en;
+            row.innerHTML = `<span class="update-date">${date}</span>${sev} <span class="update-msg">${msg || u.message_de}</span>` +
+                `<button class="btn btn-sm btn-danger" onclick="Admin.deleteIncidentUpdate(${u.id})">&times;</button>`;
+            list.appendChild(row);
+        });
+    }
+
+    async function addIncidentUpdate() {
+        const incId = document.getElementById("inc-id").value;
+        if (!incId) return;
+        const body = {
+            message_de: document.getElementById("inc-update-de").value,
+            message_en: document.getElementById("inc-update-en").value,
+            severity: document.getElementById("inc-update-severity").value || null,
+        };
+        try {
+            await api("POST", `/api/incidents/${incId}/updates`, body);
+            document.getElementById("inc-update-de").value = "";
+            document.getElementById("inc-update-en").value = "";
+            document.getElementById("inc-update-severity").value = "";
+            await loadIncidents();
+            const inc = incidentItems.find(i => i.id === parseInt(incId));
+            if (inc) renderIncidentUpdates(inc.updates || []);
+        } catch (e) {
+            showModal(e.message, "error");
+        }
+    }
+
+    async function deleteIncidentUpdate(updateId) {
+        const incId = document.getElementById("inc-id").value;
+        if (!incId) return;
+        try {
+            await api("DELETE", `/api/incidents/${incId}/updates/${updateId}`);
+            await loadIncidents();
+            const inc = incidentItems.find(i => i.id === parseInt(incId));
+            if (inc) renderIncidentUpdates(inc.updates || []);
+        } catch (e) {
+            showModal(e.message, "error");
+        }
     }
 
     // --- Footer (with drag & drop) ---
@@ -725,6 +787,8 @@ networks:
         saveIncident,
         editIncident,
         confirmDeleteIncident,
+        addIncidentUpdate,
+        deleteIncidentUpdate,
         showFooterForm: () => showFooterForm(),
         hideFooterForm,
         saveFooterItem,

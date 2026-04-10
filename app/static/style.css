@@ -222,6 +222,53 @@ body {
 .incident-content { font-size: 12px; color: var(--text-secondary); margin-left: 6px; }
 .incident-date { font-size: 11px; color: var(--text-secondary); margin-left: 6px; }
 
+.incident-resolved {
+    background: var(--card-bg);
+    border-left-color: var(--green);
+    opacity: 0.7;
+}
+.incident-resolved .incident-severity {
+    background: var(--green);
+    color: #fff;
+}
+
+.incident-updates {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--card-border);
+}
+.incident-update {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+}
+.incident-update-date {
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+.incident-update-msg {
+    color: var(--text-primary);
+}
+.incident-update .incident-severity {
+    font-size: 9px;
+    padding: 1px 4px;
+}
+
+.incident-update-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--card-border);
+}
+.update-date { color: var(--text-secondary); font-size: 11px; flex-shrink: 0; }
+.update-msg { flex: 1; }
+
 #incidents-container:not(:empty) { margin-bottom: 6px; }
 
 /* Instance headers (multi-instance) */

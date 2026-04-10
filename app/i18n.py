@@ -60,6 +60,11 @@ TRANSLATIONS = {
         "unsaved_changes": "Unsaved changes",
         "hide_redundant": "Hide redundant outages",
         "hide_redundant_hint": "Monitors with a prefixed name (e.g. VPN Monitor) are hidden if the base monitor is also down.",
+        "resolved": "Resolved",
+        "resolved_at": "End time",
+        "updates": "Updates",
+        "add_update": "Add Update",
+        "update_severity": "Severity change",
     },
     "de": {
         "title": "Dienststatus",
@@ -119,9 +124,14 @@ TRANSLATIONS = {
         "confirm_delete": "Sind Sie sicher, dass Sie dies l\u00f6schen m\u00f6chten?",
         "no_monitors": "Keine Monitore konfiguriert",
         "group_other": "Weitere Dienste",
-        "unsaved_changes": "Nicht gespeicherte Änderungen",
-        "hide_redundant": "Redundante Ausfälle ausblenden",
+        "unsaved_changes": "Nicht gespeicherte \u00c4nderungen",
+        "hide_redundant": "Redundante Ausf\u00e4lle ausblenden",
         "hide_redundant_hint": "Monitore mit vorangestelltem Zusatz (z.\u00a0B. VPN Monitor) werden ausgeblendet, wenn der Basis-Monitor ebenfalls ausgefallen ist.",
+        "resolved": "Behoben",
+        "resolved_at": "Endzeitpunkt",
+        "updates": "Updates",
+        "add_update": "Update hinzuf\u00fcgen",
+        "update_severity": "Schweregrad\u00e4nderung",
     },
 }
 

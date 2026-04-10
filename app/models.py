@@ -40,9 +40,21 @@ class Incident(Base):
     severity = Column(Text, nullable=False, default="warning")  # info, warning, critical
     active = Column(Boolean, nullable=False, default=True)
     occurred_at = Column(Text, nullable=False, server_default="(datetime('now'))")
+    resolved_at = Column(Text, nullable=True)
     position = Column(Integer, nullable=False, default=0)
     created_at = Column(Text, nullable=False, server_default="(datetime('now'))")
     updated_at = Column(Text, nullable=False, server_default="(datetime('now'))")
+
+
+class IncidentUpdate(Base):
+    __tablename__ = "incident_update"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    incident_id = Column(Integer, ForeignKey("incident.id", ondelete="CASCADE"), nullable=False)
+    message_de = Column(Text, nullable=False, default="")
+    message_en = Column(Text, nullable=False, default="")
+    severity = Column(Text, nullable=True)
+    created_at = Column(Text, nullable=False, server_default="(datetime('now'))")
 
 
 class Setting(Base):

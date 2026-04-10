@@ -297,18 +297,31 @@
         const container = document.getElementById("incidents-container");
         container.innerHTML = "";
         (incidents || []).forEach(inc => {
-            if (!inc.active) return;
+            if (!inc.active && !inc.resolved) return;
             const div = document.createElement("div");
-            div.className = "incident incident-" + inc.severity;
+            div.className = inc.resolved
+                ? "incident incident-resolved"
+                : "incident incident-" + inc.severity;
             div.dataset.incidentId = inc.id;
             const title = currentLang === "de" ? inc.title_de : inc.title_en;
             const content = currentLang === "de" ? inc.content_de : inc.content_en;
             const date = inc.occurred_at ? inc.occurred_at.replace("T", " ").slice(0, 16) : "";
-            const sevLabel = tl("severity_" + inc.severity);
+            const sevLabel = inc.resolved ? tl("resolved") : tl("severity_" + inc.severity);
             let html = `<span class="incident-severity">${esc(sevLabel)}</span>`;
             html += `<strong class="incident-title">${esc(title)}</strong>`;
             if (date) html += `<span class="incident-date">${esc(date)}</span>`;
             if (content) html += `<span class="incident-content">${esc(content)}</span>`;
+            // Updates timeline
+            if (inc.updates && inc.updates.length > 0) {
+                html += '<div class="incident-updates">';
+                inc.updates.forEach(u => {
+                    const uDate = (u.created_at || "").replace("T", " ").slice(0, 16);
+                    const uMsg = currentLang === "de" ? u.message_de : u.message_en;
+                    const uSev = u.severity ? `<span class="incident-severity">${esc(tl("severity_" + u.severity))}</span>` : "";
+                    html += `<div class="incident-update">${uSev}<span class="incident-update-date">${esc(uDate)}</span><span class="incident-update-msg">${esc(uMsg || u.message_de)}</span></div>`;
+                });
+                html += '</div>';
+            }
             div.innerHTML = html;
             container.appendChild(div);
         });

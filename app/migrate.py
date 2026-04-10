@@ -7,6 +7,7 @@ log = logging.getLogger(__name__)
 COLUMN_MIGRATIONS = [
     ("incident", "occurred_at", "ALTER TABLE incident ADD COLUMN occurred_at TEXT NOT NULL DEFAULT ''"),
     ("incident", "position", "ALTER TABLE incident ADD COLUMN position INTEGER NOT NULL DEFAULT 0"),
+    ("incident", "resolved_at", "ALTER TABLE incident ADD COLUMN resolved_at TEXT DEFAULT NULL"),
 ]
 
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
-from app.models import Incident
+from app.models import Incident, IncidentUpdate
 
 
 def list_incidents(db: Session, active_only: bool = False) -> list[Incident]:
@@ -54,3 +54,32 @@ def reorder_incidents(db: Session, incident_ids: list[int]):
         if inc:
             inc.position = pos
     db.commit()
+
+
+def list_updates(db: Session, incident_id: int) -> list[IncidentUpdate]:
+    return db.query(IncidentUpdate).filter(
+        IncidentUpdate.incident_id == incident_id
+    ).order_by(IncidentUpdate.created_at).all()
+
+
+def create_update(db: Session, incident_id: int, data: dict) -> IncidentUpdate | None:
+    inc = get_incident(db, incident_id)
+    if not inc:
+        return None
+    if "created_at" not in data or not data.get("created_at"):
+        data["created_at"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M")
+    upd = IncidentUpdate(incident_id=incident_id, **data)
+    db.add(upd)
+    inc.updated_at = datetime.utcnow().isoformat()
+    db.commit()
+    db.refresh(upd)
+    return upd
+
+
+def delete_update(db: Session, update_id: int) -> bool:
+    upd = db.query(IncidentUpdate).filter(IncidentUpdate.id == update_id).first()
+    if not upd:
+        return False
+    db.delete(upd)
+    db.commit()
+    return True

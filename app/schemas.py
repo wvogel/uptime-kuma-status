@@ -25,6 +25,7 @@ class IncidentCreate(BaseModel):
     severity: str = "warning"
     active: bool = True
     occurred_at: str | None = None
+    resolved_at: str | None = None
 
 
 class IncidentUpdate(BaseModel):
@@ -35,6 +36,25 @@ class IncidentUpdate(BaseModel):
     severity: str | None = None
     active: bool | None = None
     occurred_at: str | None = None
+    resolved_at: str | None = None
+
+
+class IncidentUpdateCreate(BaseModel):
+    message_de: str = ""
+    message_en: str = ""
+    severity: str | None = None
+
+
+class IncidentUpdateOut(BaseModel):
+    id: int
+    incident_id: int
+    message_de: str
+    message_en: str
+    severity: str | None
+    created_at: str
+
+    class Config:
+        from_attributes = True
 
 
 class IncidentOut(BaseModel):
@@ -46,9 +66,11 @@ class IncidentOut(BaseModel):
     severity: str
     active: bool
     occurred_at: str
+    resolved_at: str | None = None
     position: int
     created_at: str
     updated_at: str
+    updates: list[IncidentUpdateOut] = []
 
     class Config:
         from_attributes = True

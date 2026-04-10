@@ -19,8 +19,9 @@ STATUS_MAP = {0: "down", 1: "up", 2: "pending", 3: "maintenance"}
 
 def _read_sqlite():
     """Read all config from SQLite (instances, hidden, incidents, settings, footer)."""
-    conn = sqlite3.connect(config.DATABASE_PATH)
+    conn = sqlite3.connect(config.DATABASE_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
     try:
         instances = [dict(r) for r in conn.execute(
             "SELECT * FROM kuma_instance ORDER BY position, name"

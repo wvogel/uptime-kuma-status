@@ -31,7 +31,7 @@ def _read_sqlite():
         }
         incidents = [dict(r) for r in conn.execute(
             "SELECT * FROM incident WHERE active = 1"
-            " OR (resolved_at IS NOT NULL AND resolved_at > datetime('now', '-30 minutes'))"
+            " OR (resolved_at IS NOT NULL AND resolved_at > datetime('now', 'localtime', '-30 minutes'))"
             " ORDER BY position, occurred_at DESC"
         ).fetchall()]
         incident_updates = {}
@@ -213,7 +213,7 @@ class MonitorFetcher:
 
 def _build_incident(inc: dict, updates: list[dict]) -> dict:
     """Build incident dict with resolved state and effective severity."""
-    now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M")
+    now = datetime.now().strftime("%Y-%m-%dT%H:%M")
     resolved_at = inc.get("resolved_at") or ""
     resolved = bool(resolved_at and resolved_at <= now)
 

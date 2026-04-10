@@ -980,6 +980,24 @@ body {
 }
 
 /* Monitor layout: sidebar + table */
+.monitors-search {
+    margin-bottom: 10px;
+}
+.monitors-search input {
+    width: 100%;
+    max-width: 400px;
+    padding: 6px 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 13px;
+}
+.monitors-search input:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
 .monitors-layout {
     display: flex;
     gap: 20px;

@@ -115,7 +115,11 @@ const Admin = (function () {
     function loadTab(tab) {
         switch (tab) {
             case "instances": loadInstances(); break;
-            case "monitors": loadMonitors(); break;
+            case "monitors":
+                loadMonitors();
+                document.getElementById("monitors-search").value = "";
+                document.getElementById("monitors-search").oninput = function() { filterMonitors(this.value); };
+                break;
             case "incidents": loadIncidents(); break;
             case "footer": loadFooter(); break;
             case "settings": loadSettings().then(watchSettingsChanges); break;
@@ -376,6 +380,37 @@ networks:
                 });
             };
             window.addEventListener("scroll", onScroll, { passive: true });
+        }
+    }
+
+    function filterMonitors(query) {
+        const q = query.toLowerCase().trim();
+        const rows = document.querySelectorAll("#monitors-table tbody tr");
+        rows.forEach(row => {
+            if (row.classList.contains("monitor-instance-sep")) {
+                row.style.display = q ? "none" : "";
+                return;
+            }
+            if (!q) {
+                row.style.display = "";
+                return;
+            }
+            const name = (row.querySelector("span:not(.dot):not(.tree-branch)")?.textContent || "").toLowerCase();
+            row.style.display = name.includes(q) ? "" : "none";
+        });
+        // Show instance separators if any of their monitors are visible
+        if (q) {
+            let lastSep = null;
+            rows.forEach(row => {
+                if (row.classList.contains("monitor-instance-sep")) {
+                    lastSep = row;
+                    return;
+                }
+                if (row.style.display !== "none" && lastSep) {
+                    lastSep.style.display = "";
+                    lastSep = null;
+                }
+            });
         }
     }
 

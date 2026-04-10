@@ -65,6 +65,7 @@ TRANSLATIONS = {
         "updates": "Updates",
         "add_update": "Add Update",
         "update_severity": "Severity change",
+        "search": "Search...",
     },
     "de": {
         "title": "Dienststatus",
@@ -132,6 +133,7 @@ TRANSLATIONS = {
         "updates": "Updates",
         "add_update": "Update hinzuf\u00fcgen",
         "update_severity": "Schweregrad\u00e4nderung",
+        "search": "Suchen...",
     },
 }
 

@@ -190,6 +190,15 @@
     }
 
     function filterRedundant(list) {
+        // Merge exact duplicates (same name across instances)
+        for (let idx = list.length - 1; idx >= 0; idx--) {
+            const first = list.findIndex(i => i.name.toLowerCase() === list[idx].name.toLowerCase());
+            if (first < idx) {
+                list[first].hasRedundant = true;
+                list.splice(idx, 1);
+            }
+        }
+        // Remove prefixed monitors (e.g. "VPN Köln" when "Köln" is also down)
         const names = list.map(i => i.name.toLowerCase());
         for (let idx = list.length - 1; idx >= 0; idx--) {
             const lower = list[idx].name.toLowerCase();

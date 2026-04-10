@@ -314,6 +314,25 @@ body {
 
 .issue-name {
     font-weight: 500;
+    position: relative;
+}
+
+.issue-name[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
 }
 
 /* Monitor Grid (masonry columns, 4 columns) */

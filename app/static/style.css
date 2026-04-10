@@ -312,12 +312,18 @@ body {
     vertical-align: middle;
 }
 
+.issue-dot-wrap {
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
 .issue-name {
     font-weight: 500;
     position: relative;
 }
 
-.issue-name[data-tooltip]:hover::after {
+[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     bottom: 100%;

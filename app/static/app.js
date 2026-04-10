@@ -183,8 +183,9 @@
             row.className = "issue-row";
             const tooltip = iss.path ? ` data-tooltip="${esc(iss.path)}"` : "";
             const color = getStatusColor(iss.status);
+            const hiddenTip = iss.hidden ? ` data-tooltip="${esc(iss.hidden.join(", "))}"` : "";
             const dot = iss.hasRedundant
-                ? `<svg class="issue-dot" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.5" fill="${color}"/><line x1="3" y1="6" x2="9" y2="6" stroke="#fff" stroke-width="1.5"/><line x1="6" y1="3" x2="6" y2="9" stroke="#fff" stroke-width="1.5"/></svg>`
+                ? `<span class="issue-dot-wrap"${hiddenTip}><svg class="issue-dot" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.5" fill="${color}"/><line x1="3" y1="6" x2="9" y2="6" stroke="#fff" stroke-width="1.5"/><line x1="6" y1="3" x2="6" y2="9" stroke="#fff" stroke-width="1.5"/></svg></span>`
                 : `<svg class="issue-dot" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5.5" fill="${color}"/></svg>`;
             row.innerHTML = `${dot}<span class="issue-name"${tooltip}>${esc(iss.name)}</span>`;
             box.appendChild(row);
@@ -206,6 +207,7 @@
             const first = list.findIndex(i => i.name.toLowerCase() === list[idx].name.toLowerCase());
             if (first < idx) {
                 list[first].hasRedundant = true;
+                (list[first].hidden = list[first].hidden || []).push(list[idx].name + (list[idx].path ? " (" + list[idx].path + ")" : ""));
                 list.splice(idx, 1);
             }
         }
@@ -218,7 +220,10 @@
             );
             if (base) {
                 const baseItem = list.find(i => i.name.toLowerCase() === base);
-                if (baseItem) baseItem.hasRedundant = true;
+                if (baseItem) {
+                    baseItem.hasRedundant = true;
+                    (baseItem.hidden = baseItem.hidden || []).push(list[idx].name);
+                }
                 list.splice(idx, 1);
             }
         }

@@ -149,6 +149,11 @@
         });
         container.innerHTML = "";
 
+        if ((data.settings || {}).hide_redundant_issues === "true") {
+            filterRedundant(issues);
+            filterRedundant(maintenance);
+        }
+
         if (issues.length > 0) {
             container.appendChild(buildIssueBox(
                 "issues-box-issues",
@@ -181,6 +186,17 @@
             box.appendChild(row);
         });
         return box;
+    }
+
+    function filterRedundant(list) {
+        const names = list.map(i => i.name.toLowerCase());
+        for (let idx = list.length - 1; idx >= 0; idx--) {
+            const lower = list[idx].name.toLowerCase();
+            const isRedundant = names.some(other =>
+                other !== lower && lower.endsWith(" " + other)
+            );
+            if (isRedundant) list.splice(idx, 1);
+        }
     }
 
     function collectIssues(nodes, instanceName, parents, issues, maintenance, multiInstance) {

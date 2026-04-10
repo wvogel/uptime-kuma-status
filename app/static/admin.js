@@ -624,6 +624,7 @@ networks:
         document.getElementById("set-ticket-url").value = data.ticket_url || "";
         document.getElementById("set-ticket-label-de").value = data.ticket_label_de || "";
         document.getElementById("set-ticket-label-en").value = data.ticket_label_en || "";
+        document.getElementById("set-hide-redundant").checked = data.hide_redundant_issues === "true";
 
         const logoLight = data.logo_light;
         const logoDark = data.logo_dark;
@@ -649,6 +650,7 @@ networks:
             { key: "ticket_url", value: document.getElementById("set-ticket-url").value },
             { key: "ticket_label_de", value: document.getElementById("set-ticket-label-de").value },
             { key: "ticket_label_en", value: document.getElementById("set-ticket-label-en").value },
+            { key: "hide_redundant_issues", value: document.getElementById("set-hide-redundant").checked ? "true" : "false" },
         ];
         for (const s of settings) {
             await api("PUT", "/api/settings", s);

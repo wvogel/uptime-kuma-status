@@ -118,7 +118,7 @@ const Admin = (function () {
             case "monitors": loadMonitors(); break;
             case "incidents": loadIncidents(); break;
             case "footer": loadFooter(); break;
-            case "settings": loadSettings(); break;
+            case "settings": loadSettings().then(watchSettingsChanges); break;
         }
     }
 
@@ -614,6 +614,31 @@ networks:
 
     // --- Settings ---
 
+    let settingsSnapshot = "";
+
+    function captureSettingsSnapshot() {
+        const fields = document.querySelectorAll("#tab-settings input, #tab-settings select");
+        settingsSnapshot = Array.from(fields).map(f => f.type === "checkbox" ? f.checked : f.value).join("|");
+    }
+
+    function checkSettingsDirty() {
+        const fields = document.querySelectorAll("#tab-settings input, #tab-settings select");
+        const current = Array.from(fields).map(f => f.type === "checkbox" ? f.checked : f.value).join("|");
+        const dirty = current !== settingsSnapshot;
+        const hint = document.getElementById("settings-unsaved");
+        const btn = document.getElementById("settings-save-btn");
+        if (hint) hint.style.display = dirty ? "" : "none";
+        if (btn) btn.classList.toggle("btn-unsaved", dirty);
+    }
+
+    function watchSettingsChanges() {
+        const fields = document.querySelectorAll("#tab-settings input, #tab-settings select");
+        fields.forEach(f => {
+            f.addEventListener("input", checkSettingsDirty);
+            f.addEventListener("change", checkSettingsDirty);
+        });
+    }
+
     async function loadSettings() {
         const data = await api("GET", "/api/settings");
         document.getElementById("set-title-de").value = data.page_title_de || "";
@@ -638,6 +663,8 @@ networks:
             img.src = logoDark + "?t=" + Date.now();
             img.style.display = "";
         }
+        captureSettingsSnapshot();
+        checkSettingsDirty();
     }
 
     async function saveSettings() {

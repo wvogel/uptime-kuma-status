@@ -182,7 +182,8 @@
             const row = document.createElement("div");
             row.className = "issue-row";
             const tooltip = iss.path ? ` data-tooltip="${esc(iss.path)}"` : "";
-            row.innerHTML = `<span class="dot dot-${iss.status}"></span><span class="issue-name"${tooltip}>${esc(iss.name)}</span>`;
+            const dotClass = iss.hasRedundant ? "dot dot-plus dot-" + iss.status : "dot dot-" + iss.status;
+            row.innerHTML = `<span class="${dotClass}">${iss.hasRedundant ? "+" : ""}</span><span class="issue-name"${tooltip}>${esc(iss.name)}</span>`;
             box.appendChild(row);
         });
         return box;
@@ -192,10 +193,14 @@
         const names = list.map(i => i.name.toLowerCase());
         for (let idx = list.length - 1; idx >= 0; idx--) {
             const lower = list[idx].name.toLowerCase();
-            const isRedundant = names.some(other =>
+            const base = names.find(other =>
                 other !== lower && lower.endsWith(" " + other)
             );
-            if (isRedundant) list.splice(idx, 1);
+            if (base) {
+                const baseItem = list.find(i => i.name.toLowerCase() === base);
+                if (baseItem) baseItem.hasRedundant = true;
+                list.splice(idx, 1);
+            }
         }
     }
 

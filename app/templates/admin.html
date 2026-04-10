@@ -202,7 +202,8 @@
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary" onclick="Admin.saveSettings()" data-i18n="save">Save</button>
+                <span id="settings-unsaved" class="unsaved-hint" style="display:none" data-i18n="unsaved_changes">Unsaved changes</span>
+                <button class="btn btn-primary" id="settings-save-btn" onclick="Admin.saveSettings()" data-i18n="save">Save</button>
             </div>
         </div>
     </div>

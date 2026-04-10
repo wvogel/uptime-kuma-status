@@ -308,8 +308,18 @@ body {
 }
 
 .issues-box .issue-row .dot {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
+}
+
+.dot-plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
 }
 
 .issue-name {
@@ -670,8 +680,29 @@ body {
 
 .form-actions {
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
     margin-top: 16px;
+}
+
+.unsaved-hint {
+    font-size: 12px;
+    color: var(--yellow);
+    animation: fade-in 0.2s ease;
+}
+
+.btn-unsaved {
+    animation: pulse-unsaved 1.5s ease infinite;
+}
+
+@keyframes pulse-unsaved {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 159, 10, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(255, 159, 10, 0); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Buttons */

@@ -211,11 +211,22 @@ class MonitorFetcher:
         await self._fetch_all()
 
 
-def _build_incident(inc: dict, updates: list[dict]) -> dict:
-    """Build incident dict with resolved state and effective severity."""
-    now = datetime.now().strftime("%Y-%m-%dT%H:%M")
+def _build_incident(inc: dict, updates: list[dict]) -> dict | None:
+    """Build incident dict with resolved state and effective severity.
+    Returns None if resolved more than 30 minutes ago."""
+    now = datetime.now()
+    now_str = now.strftime("%Y-%m-%dT%H:%M")
     resolved_at = inc.get("resolved_at") or ""
-    resolved = bool(resolved_at and resolved_at <= now)
+    resolved = bool(resolved_at and resolved_at <= now_str)
+
+    # Hide completely if resolved more than 30 minutes ago
+    if resolved and resolved_at:
+        try:
+            resolved_dt = datetime.strptime(resolved_at[:16], "%Y-%m-%dT%H:%M")
+            if (now - resolved_dt).total_seconds() > 1800:
+                return None
+        except ValueError:
+            pass
 
     # Effective severity: last update with severity, or incident severity
     effective_severity = inc["severity"]
@@ -266,8 +277,8 @@ async def get_status_data() -> dict:
     return {
         "instances": instances,
         "incidents": [
-            _build_incident(inc, incident_updates.get(inc["id"], []))
-            for inc in incidents
+            built for inc in incidents
+            if (built := _build_incident(inc, incident_updates.get(inc["id"], []))) is not None
         ],
         "settings": settings,
         "footer_items": [

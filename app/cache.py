@@ -42,7 +42,7 @@ def _read_sqlite():
         footer_items = [dict(r) for r in conn.execute(
             "SELECT * FROM footer_item ORDER BY position"
         ).fetchall()]
-        return instances, hidden_set, incidents, settings, footer_items
+        return instances, hidden_set, incidents, incident_updates, settings, footer_items
     finally:
         conn.close()
 
@@ -166,7 +166,7 @@ class MonitorFetcher:
     async def _fetch_all(self):
         from app.services.instance_service import decrypt_api_key
 
-        instances, hidden_set, _, _, _ = _read_sqlite()
+        instances, hidden_set, _, _, _, _ = _read_sqlite()
         log.info("Fetch cycle: %d instances, %d hidden", len(instances), len(hidden_set))
 
         results = []
@@ -252,7 +252,7 @@ def _build_incident(inc: dict, updates: list[dict]) -> dict:
 
 async def get_status_data() -> dict:
     """Read current status from Valkey + SQLite. Used by public and admin."""
-    _, hidden_set, incidents, settings, footer_items = _read_sqlite()
+    _, hidden_set, incidents, incident_updates, settings, footer_items = _read_sqlite()
 
     # Read monitor data from Valkey
     r = redis.from_url(VALKEY_URL)

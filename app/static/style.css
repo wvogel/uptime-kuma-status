@@ -312,16 +312,6 @@ body {
     height: 8px;
 }
 
-.issue-path {
-    color: var(--text-secondary);
-    font-size: 11px;
-    margin-right: 2px;
-}
-
-.issue-path::after {
-    content: " \203a ";
-}
-
 .issue-name {
     font-weight: 500;
 }

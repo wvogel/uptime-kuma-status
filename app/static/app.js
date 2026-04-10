@@ -176,8 +176,8 @@
         items.forEach(iss => {
             const row = document.createElement("div");
             row.className = "issue-row";
-            const path = iss.path ? `<span class="issue-path">${esc(iss.path)}</span>` : "";
-            row.innerHTML = `<span class="dot dot-${iss.status}"></span>${path}<span class="issue-name">${esc(iss.name)}</span>`;
+            const title = iss.path ? ` title="${esc(iss.path)}"` : "";
+            row.innerHTML = `<span class="dot dot-${iss.status}"></span><span class="issue-name"${title}>${esc(iss.name)}</span>`;
             box.appendChild(row);
         });
         return box;

@@ -628,6 +628,12 @@ body {
     cursor: pointer;
 }
 
+.setting-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
 .dual-input {
     display: flex;
     gap: 8px;

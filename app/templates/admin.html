@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Admin</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon-admin.svg">
-    <link rel="stylesheet" href="/static/style.css?v=6">
+    <link rel="stylesheet" href="/static/style.css?v=7">
     <script>const I18N = JSON.parse({{ translations | tojson | replace("</", "<\\/") | tojson }});</script>
 </head>
 <body>
@@ -193,10 +193,13 @@
                 </div>
 
                 <label data-i18n="hide_redundant">Hide redundant outages</label>
-                <label class="toggle">
-                    <input type="checkbox" id="set-hide-redundant">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div style="display:flex;align-items:center;gap:12px">
+                    <label class="toggle" style="flex-shrink:0">
+                        <input type="checkbox" id="set-hide-redundant">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="setting-hint" data-i18n="hide_redundant_hint">Monitors with a prefixed name (e.g. VPN Monitor) are hidden if the base monitor is also down.</span>
+                </div>
             </div>
             <div class="form-actions">
                 <button class="btn btn-primary" onclick="Admin.saveSettings()" data-i18n="save">Save</button>
@@ -213,6 +216,6 @@
     </div>
 </div>
 
-<script src="/static/admin.js?v=6"></script>
+<script src="/static/admin.js?v=7"></script>
 </body>
 </html>

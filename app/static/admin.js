@@ -805,6 +805,10 @@ networks:
             setLang(currentLang === "en" ? "de" : "en");
         });
 
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+            if (currentTheme === "auto") applyTheme("auto");
+        });
+
         initTabs();
         loadInstances();
     });

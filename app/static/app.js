@@ -513,7 +513,10 @@
 
         // Listen for OS theme changes
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
-            if (currentTheme === "auto") updateLogo();
+            if (currentTheme === "auto") {
+                applyTheme("auto");
+                updateLogo();
+            }
         });
 
         connectWS();

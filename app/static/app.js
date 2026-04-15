@@ -519,6 +519,16 @@
             }
         });
 
+        // Toggle fullscreen body class for responsive scaling
+        function updateFullscreen() {
+            const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            document.body.classList.toggle("is-fullscreen", isFs);
+            requestAnimationFrame(balanceColumns);
+        }
+        document.addEventListener("fullscreenchange", updateFullscreen);
+        document.addEventListener("webkitfullscreenchange", updateFullscreen);
+        updateFullscreen();
+
         connectWS();
 
         let resizeTimer;

@@ -1146,79 +1146,77 @@ body {
     .monitor-grid { column-count: 2; }
 }
 
-/* Large screens / TV / fullscreen — scale text up dramatically for readability from a distance */
-@media (min-width: 1800px) {
-    .status-page { max-width: 100%; padding: 10px 24px; font-size: 22px; }
-    .monitor-grid { column-count: 4; column-gap: 18px; }
-    .header { gap: 16px; margin-bottom: 10px; padding: 0; }
-    .header h1 { font-size: 56px; }
-    .header-status { font-size: 34px; padding: 12px 28px; }
-    .header-btn { font-size: 18px; padding: 8px 14px; }
-    .instance-header { padding: 8px 16px; margin: 14px 0 10px; }
-    .instance-header h2 { font-size: 26px; }
-    .monitor-name { font-size: 22px; }
-    .card-header h3 { font-size: 26px; }
-    .dot { width: 16px; height: 16px; }
-    .card-header .dot { width: 20px; height: 20px; }
-    /* Issues / outage area — extra large */
-    .issues-title { font-size: 32px; }
-    .issues-box .issue-row { font-size: 38px; gap: 12px; margin-right: 28px; }
-    .issues-box .issue-row .dot { width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
-    .issue-dot { width: 28px !important; height: 28px !important; }
-    .incident-title { font-size: 34px; }
-    .incident-content { font-size: 28px; }
-    .incident-severity { font-size: 28px; padding: 6px 16px; }
-    .incident-date { font-size: 26px; }
-    .footer { font-size: 18px; }
-    .logo { max-height: 72px; }
-}
+/* Fullscreen (F11 / Fullscreen API) — scale text up dramatically for distance readability.
+   Only active in true browser fullscreen, not based on viewport size alone. */
+body.is-fullscreen .status-page { max-width: 100%; padding: 10px 24px; font-size: 22px; }
+body.is-fullscreen .monitor-grid { column-count: 4; column-gap: 18px; }
+body.is-fullscreen .header { gap: 16px; margin-bottom: 10px; padding: 0; }
+body.is-fullscreen .header h1 { font-size: 56px; }
+body.is-fullscreen .header-status { font-size: 34px; padding: 12px 28px; }
+body.is-fullscreen .header-btn { font-size: 18px; padding: 8px 14px; }
+body.is-fullscreen .instance-header { padding: 8px 16px; margin: 14px 0 10px; }
+body.is-fullscreen .instance-header h2 { font-size: 26px; }
+body.is-fullscreen .monitor-name { font-size: 22px; }
+body.is-fullscreen .card-header h3 { font-size: 26px; }
+body.is-fullscreen .dot { width: 16px; height: 16px; }
+body.is-fullscreen .card-header .dot { width: 20px; height: 20px; }
+body.is-fullscreen .issues-title { font-size: 32px; }
+body.is-fullscreen .issues-box .issue-row { font-size: 38px; gap: 12px; margin-right: 28px; }
+body.is-fullscreen .issues-box .issue-row .dot { width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
+body.is-fullscreen .issue-dot { width: 28px !important; height: 28px !important; }
+body.is-fullscreen .incident-title { font-size: 34px; }
+body.is-fullscreen .incident-content { font-size: 28px; }
+body.is-fullscreen .incident-severity { font-size: 28px; padding: 6px 16px; }
+body.is-fullscreen .incident-date { font-size: 26px; }
+body.is-fullscreen .footer { font-size: 18px; }
+body.is-fullscreen .logo { max-height: 72px; }
 
 @media (min-width: 2400px) {
-    .status-page { padding: 14px 32px; font-size: 28px; }
-    .header { gap: 20px; margin-bottom: 14px; padding: 0; }
-    .header h1 { font-size: 72px; }
-    .header-status { font-size: 44px; padding: 14px 32px; }
-    .header-btn { font-size: 22px; padding: 10px 16px; }
-    .instance-header { padding: 10px 20px; margin: 18px 0 14px; }
-    .instance-header h2 { font-size: 34px; }
-    .monitor-name { font-size: 28px; }
-    .card-header h3 { font-size: 32px; }
-    .dot { width: 20px; height: 20px; }
-    .card-header .dot { width: 24px; height: 24px; }
-    .issues-title { font-size: 42px; }
-    .issues-box .issue-row { font-size: 48px; gap: 16px; }
-    .issues-box .issue-row .dot { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
-    .issue-dot { width: 36px !important; height: 36px !important; }
-    .incident-title { font-size: 44px; }
-    .incident-content { font-size: 36px; }
-    .incident-severity { font-size: 36px; padding: 7px 18px; }
-    .incident-date { font-size: 32px; }
-    .footer { font-size: 22px; }
-    .logo { max-height: 92px; }
+    body.is-fullscreen .status-page { padding: 14px 32px; font-size: 28px; }
+    body.is-fullscreen .header { gap: 20px; margin-bottom: 14px; }
+    body.is-fullscreen .header h1 { font-size: 72px; }
+    body.is-fullscreen .header-status { font-size: 44px; padding: 14px 32px; }
+    body.is-fullscreen .header-btn { font-size: 22px; padding: 10px 16px; }
+    body.is-fullscreen .instance-header { padding: 10px 20px; margin: 18px 0 14px; }
+    body.is-fullscreen .instance-header h2 { font-size: 34px; }
+    body.is-fullscreen .monitor-name { font-size: 28px; }
+    body.is-fullscreen .card-header h3 { font-size: 32px; }
+    body.is-fullscreen .dot { width: 20px; height: 20px; }
+    body.is-fullscreen .card-header .dot { width: 24px; height: 24px; }
+    body.is-fullscreen .issues-title { font-size: 42px; }
+    body.is-fullscreen .issues-box .issue-row { font-size: 48px; gap: 16px; }
+    body.is-fullscreen .issues-box .issue-row .dot { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
+    body.is-fullscreen .issue-dot { width: 36px !important; height: 36px !important; }
+    body.is-fullscreen .incident-title { font-size: 44px; }
+    body.is-fullscreen .incident-content { font-size: 36px; }
+    body.is-fullscreen .incident-severity { font-size: 36px; padding: 7px 18px; }
+    body.is-fullscreen .incident-date { font-size: 32px; }
+    body.is-fullscreen .footer { font-size: 22px; }
+    body.is-fullscreen .logo { max-height: 92px; }
 }
 
 @media (min-width: 3200px) {
-    .status-page { padding: 18px 44px; font-size: 36px; }
-    .header { gap: 24px; margin-bottom: 18px; padding: 0; }
-    .header h1 { font-size: 96px; }
-    .header-status { font-size: 56px; padding: 18px 40px; }
-    .header-btn { font-size: 28px; padding: 12px 20px; }
-    .instance-header { padding: 14px 28px; margin: 24px 0 18px; }
-    .instance-header h2 { font-size: 46px; }
-    .monitor-name { font-size: 36px; }
-    .card-header h3 { font-size: 42px; }
-    .dot { width: 26px; height: 26px; }
-    .card-header .dot { width: 30px; height: 30px; }
-    .issues-title { font-size: 54px; }
-    .issues-box .issue-row { font-size: 60px; gap: 22px; }
-    .issues-box .issue-row .dot { width: 46px; height: 46px; min-width: 46px; min-height: 46px; }
-    .issue-dot { width: 46px !important; height: 46px !important; }
-    .incident-title { font-size: 56px; }
-    .incident-content { font-size: 46px; }
-    .incident-severity { font-size: 46px; padding: 9px 24px; }
-    .incident-date { font-size: 40px; }
-    .footer { font-size: 28px; }
-    .logo { max-height: 120px; }
+    body.is-fullscreen .status-page { padding: 18px 44px; font-size: 36px; }
+    body.is-fullscreen .header { gap: 24px; margin-bottom: 18px; }
+    body.is-fullscreen .header h1 { font-size: 96px; }
+    body.is-fullscreen .header-status { font-size: 56px; padding: 18px 40px; }
+    body.is-fullscreen .header-btn { font-size: 28px; padding: 12px 20px; }
+    body.is-fullscreen .instance-header { padding: 14px 28px; margin: 24px 0 18px; }
+    body.is-fullscreen .instance-header h2 { font-size: 46px; }
+    body.is-fullscreen .monitor-name { font-size: 36px; }
+    body.is-fullscreen .card-header h3 { font-size: 42px; }
+    body.is-fullscreen .dot { width: 26px; height: 26px; }
+    body.is-fullscreen .card-header .dot { width: 30px; height: 30px; }
+    body.is-fullscreen .issues-title { font-size: 54px; }
+    body.is-fullscreen .issues-box .issue-row { font-size: 60px; gap: 22px; }
+    body.is-fullscreen .issues-box .issue-row .dot { width: 46px; height: 46px; min-width: 46px; min-height: 46px; }
+    body.is-fullscreen .issue-dot { width: 46px !important; height: 46px !important; }
+    body.is-fullscreen .incident-title { font-size: 56px; }
+    body.is-fullscreen .incident-content { font-size: 46px; }
+    body.is-fullscreen .incident-severity { font-size: 46px; padding: 9px 24px; }
+    body.is-fullscreen .incident-date { font-size: 40px; }
+    body.is-fullscreen .footer { font-size: 28px; }
+    body.is-fullscreen .logo { max-height: 120px; }
 }
 
 @media (max-width: 640px) {

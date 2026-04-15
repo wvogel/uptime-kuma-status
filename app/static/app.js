@@ -519,14 +519,22 @@
             }
         });
 
-        // Toggle fullscreen body class for responsive scaling
+        // Toggle fullscreen body class for responsive scaling.
+        // F11 uses browser fullscreen (display-mode: fullscreen), the
+        // JS Fullscreen API uses document.fullscreenElement — check both.
+        const fsMedia = window.matchMedia("(display-mode: fullscreen)");
         function updateFullscreen() {
-            const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            const isFs = fsMedia.matches
+                || !!(document.fullscreenElement || document.webkitFullscreenElement)
+                // Fallback: window covers the full screen
+                || (window.innerHeight === screen.height && window.innerWidth === screen.width);
             document.body.classList.toggle("is-fullscreen", isFs);
             requestAnimationFrame(balanceColumns);
         }
         document.addEventListener("fullscreenchange", updateFullscreen);
         document.addEventListener("webkitfullscreenchange", updateFullscreen);
+        fsMedia.addEventListener("change", updateFullscreen);
+        window.addEventListener("resize", updateFullscreen);
         updateFullscreen();
 
         connectWS();

@@ -1150,8 +1150,10 @@ body {
 @media (min-width: 1800px) {
     .status-page { max-width: 100%; padding: 24px 40px; font-size: 22px; }
     .monitor-grid { column-count: 4; column-gap: 18px; }
-    .header h1 { font-size: 40px; }
-    .header-status { font-size: 26px; padding: 10px 20px; }
+    .header { gap: 20px; margin-bottom: 20px; }
+    .header h1 { font-size: 56px; }
+    .header-status { font-size: 34px; padding: 12px 28px; }
+    .header-btn { font-size: 18px; padding: 10px 16px; }
     .monitor-name { font-size: 22px; }
     .card-header h3 { font-size: 26px; }
     .dot { width: 16px; height: 16px; }
@@ -1166,13 +1168,15 @@ body {
     .incident-severity { font-size: 22px; padding: 4px 12px; }
     .incident-date { font-size: 20px; }
     .footer { font-size: 18px; }
-    .logo { max-height: 64px; }
+    .logo { max-height: 80px; }
 }
 
 @media (min-width: 2400px) {
     .status-page { padding: 32px 56px; font-size: 28px; }
-    .header h1 { font-size: 52px; }
-    .header-status { font-size: 32px; padding: 12px 24px; }
+    .header { gap: 24px; margin-bottom: 28px; }
+    .header h1 { font-size: 72px; }
+    .header-status { font-size: 44px; padding: 14px 32px; }
+    .header-btn { font-size: 22px; padding: 12px 20px; }
     .monitor-name { font-size: 28px; }
     .card-header h3 { font-size: 32px; }
     .dot { width: 20px; height: 20px; }
@@ -1186,13 +1190,15 @@ body {
     .incident-severity { font-size: 28px; padding: 5px 14px; }
     .incident-date { font-size: 26px; }
     .footer { font-size: 22px; }
-    .logo { max-height: 84px; }
+    .logo { max-height: 110px; }
 }
 
 @media (min-width: 3200px) {
     .status-page { padding: 44px 72px; font-size: 36px; }
-    .header h1 { font-size: 68px; }
-    .header-status { font-size: 42px; padding: 14px 32px; }
+    .header { gap: 32px; margin-bottom: 36px; }
+    .header h1 { font-size: 96px; }
+    .header-status { font-size: 56px; padding: 18px 40px; }
+    .header-btn { font-size: 28px; padding: 14px 26px; }
     .monitor-name { font-size: 36px; }
     .card-header h3 { font-size: 42px; }
     .dot { width: 26px; height: 26px; }
@@ -1206,7 +1212,7 @@ body {
     .incident-severity { font-size: 36px; padding: 6px 18px; }
     .incident-date { font-size: 32px; }
     .footer { font-size: 28px; }
-    .logo { max-height: 110px; }
+    .logo { max-height: 150px; }
 }
 
 @media (max-width: 640px) {

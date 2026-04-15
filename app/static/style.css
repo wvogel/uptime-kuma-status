@@ -1146,6 +1146,60 @@ body {
     .monitor-grid { column-count: 2; }
 }
 
+/* Large screens / TV / fullscreen — scale everything up for readability from a distance */
+@media (min-width: 1800px) {
+    .status-page { max-width: 100%; padding: 20px 32px; font-size: 15px; }
+    .monitor-grid { column-count: 5; column-gap: 14px; }
+    .header h1 { font-size: 28px; }
+    .header-status { font-size: 16px; padding: 6px 14px; }
+    .monitor-name { font-size: 15px; }
+    .card-header h3 { font-size: 17px; }
+    .dot { width: 12px; height: 12px; }
+    .card-header .dot { width: 14px; height: 14px; }
+    .issues-box .issue-row { font-size: 14px; }
+    .issues-box .issue-row .dot { width: 14px; height: 14px; }
+    .incident-title { font-size: 15px; }
+    .incident-content { font-size: 14px; }
+    .incident-severity { font-size: 13px; }
+    .footer { font-size: 13px; }
+}
+
+@media (min-width: 2400px) {
+    .status-page { padding: 28px 48px; font-size: 17px; }
+    .monitor-grid { column-count: 6; column-gap: 18px; }
+    .header h1 { font-size: 36px; }
+    .header-status { font-size: 20px; padding: 8px 18px; }
+    .monitor-name { font-size: 18px; }
+    .card-header h3 { font-size: 20px; }
+    .dot { width: 14px; height: 14px; }
+    .card-header .dot { width: 16px; height: 16px; }
+    .issues-box .issue-row { font-size: 17px; }
+    .issues-box .issue-row .dot { width: 16px; height: 16px; }
+    .incident-title { font-size: 18px; }
+    .incident-content { font-size: 16px; }
+    .incident-severity { font-size: 15px; }
+    .footer { font-size: 15px; }
+    .logo { max-height: 60px; }
+}
+
+@media (min-width: 3200px) {
+    .status-page { padding: 40px 64px; font-size: 20px; }
+    .monitor-grid { column-count: 7; column-gap: 24px; }
+    .header h1 { font-size: 46px; }
+    .header-status { font-size: 24px; padding: 10px 24px; }
+    .monitor-name { font-size: 22px; }
+    .card-header h3 { font-size: 24px; }
+    .dot { width: 18px; height: 18px; }
+    .card-header .dot { width: 20px; height: 20px; }
+    .issues-box .issue-row { font-size: 20px; }
+    .issues-box .issue-row .dot { width: 20px; height: 20px; }
+    .incident-title { font-size: 22px; }
+    .incident-content { font-size: 19px; }
+    .incident-severity { font-size: 18px; }
+    .footer { font-size: 18px; }
+    .logo { max-height: 80px; }
+}
+
 @media (max-width: 640px) {
     .monitor-grid { column-count: 1; }
 

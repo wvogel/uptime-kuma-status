@@ -38,8 +38,7 @@ async def status_page(request: Request):
     # Detect oauth2-proxy user (present when accessed via SSO)
     proxy_user = request.headers.get("X-Forwarded-Email") or request.headers.get("X-Forwarded-User") or ""
 
-    return templates.TemplateResponse("status.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "status.html", {
         "data": data,
         "overall": overall,
         "default_lang": default_lang,

@@ -25,8 +25,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/", response_class=HTMLResponse)
 async def admin_page(request: Request):
-    return templates.TemplateResponse("admin.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "admin.html", {
         "t": t,
         "translations": TRANSLATIONS,
         "user": request.headers.get("X-Forwarded-User", ""),

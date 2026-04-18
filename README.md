@@ -2,7 +2,13 @@
 
 Compact status page for multiple [Uptime Kuma](https://github.com/louislam/uptime-kuma) instances. Displays hundreds of monitors across instances in a dense, Apple System Status-style layout — because Uptime Kuma's built-in status pages waste too much space.
 
-![License](https://img.shields.io/badge/license-MIT-blue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/docker-ready-2496ED.svg?logo=docker&logoColor=white)](Dockerfile)
+[![Uptime Kuma](https://img.shields.io/badge/Uptime%20Kuma-compatible-5CDD8B.svg)](https://github.com/louislam/uptime-kuma)
+[![Changelog](https://img.shields.io/badge/changelog-keepachangelog-orange.svg)](CHANGELOG.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ## Features
 

@@ -11,8 +11,12 @@ Compact status page for multiple [Uptime Kuma](https://github.com/louislam/uptim
 - **Real-Time Updates** — WebSocket + 10s HTTP polling, Valkey-backed shared cache
 - **Admin GUI** — Manage instances, hide/show monitors, incidents, footer, settings (behind oauth2-proxy)
 - **Bilingual** — German / English, switchable on both pages
-- **Theme** — Light / Dark / Auto with system preference detection
-- **Incidents** — Manual incident notices with severity levels, datetime, drag & drop sorting
+- **Theme** — Light / Dark / Auto with live OS preference detection
+- **Incidents** — Severity levels, end time with auto-resolve (30 min grace period), updates timeline with severity changes, drag & drop sorting
+- **Smart Outage List** — Groups fail as "degraded" when partially down, redundant/duplicate monitor names are collapsible with `+` indicator and hover tooltip
+- **Optional Public SSO** — Put the public page behind oauth2-proxy as well, logged-in user and logout button shown automatically
+- **Fullscreen / Wall Display Mode** — Real F11 fullscreen triggers scaled-up layout (1080p / 2K / 4K tiers) for distance readability
+- **Monitor Search** — Client-side instant filter for large monitor lists in the admin
 - **No Direct DB Access** — Uses [uptime-kuma-api](https://github.com/wvogel/uptime-kuma-api) sidecar proxy for secure read-only access
 
 ## Architecture

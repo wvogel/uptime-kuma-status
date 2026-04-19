@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-04-19
+
 ### Added
 - Incident end time (`resolved_at`) with automatic deactivation and 30-minute "Resolved" grace period on the public page
 - Incident updates timeline with timestamp, bilingual text and optional severity change per update
@@ -17,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fullscreen mode scaling — real F11 / Fullscreen API triggers a scaled layout with 3 tiers (1080p / 2K / 4K) for wall displays and distance readability
 - Live OS theme change detection — both pages update instantly when the system switches between light and dark mode
 - `TZ=Europe/Berlin` in container definitions for correct local time handling
+- Full open-source project meta: `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, GitHub issue/PR templates, Dependabot config, Docker build GitHub Actions workflow, README badges
 
 ### Changed
 - Groups in the outage list are now hidden; only the individual affected monitors are shown with the group path available on hover
@@ -26,10 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Favicons adapt to dark mode (dots and gear flip to dark background colour)
 - Issue-list dots are now inline SVGs for pixel-perfect alignment across all sizes
 - SQLite access hardened with WAL mode and a 10s busy timeout for safer concurrent reads
+- Bumped to FastAPI 0.136, SQLAlchemy 2.0.49, aiofiles 25.1.0, redis 7.4.0, Python 3.14-slim base image
 
 ### Fixed
 - `resolved_at` comparison uses local time in both the SQL query and the Python layer so incidents resolve at the moment the admin entered
 - `_read_sqlite()` now returns the `incident_updates` map (previously crashed in the public worker)
+- `TemplateResponse` updated to the new Starlette signature `(request, name, context)` to stay compatible with FastAPI 0.136+
 
 ## [0.1.0] - 2026-04-06
 
